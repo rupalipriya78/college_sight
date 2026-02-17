@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduBot - Your Educational AI Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chatbot-container {
+            width: 90%;
+            max-width: 800px;
+            height: 90vh;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .subject-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .subject-tag {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .chat-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .user-message {
+            flex-direction: row-reverse;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 15px 18px;
+            border-radius: 18px;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .bot-message .message-content {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f1f8e9 100%);
+            border: 1px solid #e1f5fe;
+            color: #1565c0;
+        }
+
+        .user-message .message-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .bot-avatar {
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+            color: white;
+        }
+
+        .user-avatar {
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+            color: white;
+        }
+
+        .input-area {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        #messageInput {
+            flex: 1;
+            padding: 12px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        #messageInput:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        #sendButton {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        #sendButton:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        #sendButton:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .quick-questions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .quick-question {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            padding: 8px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .quick-question:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 5px;
+            color: #666;
+            font-style: italic;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 3px;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: #667eea;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: scale(1); opacity: 0.7; }
+            30% { transform: scale(1.2); opacity: 1; }
+        }
+
+        .math-formula {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            border-left: 4px solid #667eea;
+            margin: 10px 0;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+
+        @media (max-width: 768px) {
+            .chatbot-container {
+                width: 95%;
+                height: 95vh;
+            }
+            
+            .message-content {
+                max-width: 85%;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .subject-tags {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chatbot-container">
+        <div class="header">
+            <h1>🎓 EduBot - Your AI Learning Companion</h1>
+            <p>Expert knowledge across all subjects • From basics to advanced • Available 24/7</p>
+            <div class="subject-tags">
+                <span class="subject-tag">Mathematics</span>
+                <span class="subject-tag">Science</span>
+                <span class="subject-tag">History</span>
+                <span class="subject-tag">Literature</span>
+                <span class="subject-tag">Programming</span>
+                <span class="subject-tag">Languages</span>
+                <span class="subject-tag">Arts</span>
+                <span class="subject-tag">Philosophy</span>
+            </div>
+        </div>
+
+        <div class="chat-area" id="chatArea">
+            <div class="message">
+                <div class="avatar bot-avatar">🤖</div>
+                <div class="message-content">
+                    <strong>Welcome to EduBot!</strong><br><br>
+                    I'm your comprehensive educational AI assistant, ready to help you learn anything from basic concepts to advanced topics across all subjects. Whether you need help with:
+                    <br><br>
+                    📚 <strong>Academic Subjects:</strong> Math, Science, History, Literature, Languages<br>
+                    💻 <strong>Technology:</strong> Programming, Computer Science, Engineering<br>
+                    🎨 <strong>Creative Arts:</strong> Art, Music, Design, Writing<br>
+                    🧠 <strong>Critical Thinking:</strong> Philosophy, Logic, Problem-solving<br>
+                    <br>
+                    Just ask me anything! I'll provide clear explanations, step-by-step solutions, and adapt to your learning level.
+                </div>
+            </div>
+
+            <div class="quick-questions">
+                <div class="quick-question" onclick="askQuestion('Explain photosynthesis in simple terms')">🌱 Explain photosynthesis</div>
+                <div class="quick-question" onclick="askQuestion('Solve: 2x + 5 = 15')">🔢 Solve algebra problem</div>
+                <div class="quick-question" onclick="askQuestion('What caused World War I?')">🏛️ History question</div>
+                <div class="quick-question" onclick="askQuestion('Explain Python functions')">💻 Programming help</div>
+                <div class="quick-question" onclick="askQuestion('How do I write a good essay?')">✍️ Writing tips</div>
+            </div>
+        </div>
+
+        <div class="input-area">
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="avatar bot-avatar">🤖</div>
+                <span>EduBot is thinking</span>
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+            <div class="input-container">
+                <input type="text" id="messageInput" placeholder="Ask me anything about any subject..." autocomplete="off">
+                <button id="sendButton">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chatArea = document.getElementById('chatArea');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const typingIndicator = document.getElementById('typingIndicator');
+
+        // Educational knowledge base with comprehensive subject coverage
+        const knowledgeBase = {
+            // Mathematics
+            mathematics: {
+                algebra: "Algebra is the branch of mathematics dealing with symbols and the rules for manipulating those symbols. Variables like x and y represent numbers, and we solve equations to find their values.",
+                calculus: "Calculus studies continuous change through derivatives (rates of change) and integrals (accumulation of quantities). It's fundamental in physics, engineering, and economics.",
+                geometry: "Geometry studies shapes, sizes, and properties of figures and spaces. It includes plane geometry (2D) and solid geometry (3D).",
+                statistics: "Statistics involves collecting, analyzing, and interpreting data. It helps us understand patterns and make predictions about populations from samples."
+            },
+            
+            // Sciences
+            physics: {
+                mechanics: "Mechanics studies motion and forces. Newton's laws describe how objects move when forces act upon them.",
+                thermodynamics: "Thermodynamics deals with heat, work, temperature, and energy. The laws govern how energy flows and transforms.",
+                electromagnetism: "Electromagnetism describes the relationship between electric and magnetic phenomena, unified by Maxwell's equations.",
+                quantum: "Quantum mechanics describes behavior of matter and energy at atomic and subatomic scales, where classical physics breaks down."
+            },
+            
+            chemistry: {
+                atoms: "Atoms are the basic units of matter, consisting of protons, neutrons, and electrons. The periodic table organizes elements by atomic structure.",
+                bonding: "Chemical bonds form when atoms share or transfer electrons. Covalent bonds share electrons, ionic bonds transfer them.",
+                reactions: "Chemical reactions rearrange atoms to form new substances. They follow conservation of mass and energy principles.",
+                organic: "Organic chemistry studies carbon-containing compounds, which form the basis of all living organisms."
+            },
+            
+            biology: {
+                cells: "Cells are the basic units of life. Prokaryotic cells lack nuclei, while eukaryotic cells have membrane-bound organelles.",
+                evolution: "Evolution explains how species change over time through natural selection, genetic variation, and environmental pressures.",
+                genetics: "Genetics studies heredity - how traits pass from parents to offspring through DNA and genes.",
+                ecology: "Ecology examines relationships between organisms and their environment, including food webs and ecosystems."
+            },
+            
+            // Programming
+            programming: {
+                python: "Python is a high-level programming language known for its simplicity and readability. It uses indentation for code structure.",
+                javascript: "JavaScript is primarily used for web development, running in browsers to create interactive web pages and applications.",
+                algorithms: "Algorithms are step-by-step procedures for solving problems. Good algorithms are efficient in time and space complexity.",
+                datastructures: "Data structures organize and store data efficiently. Arrays, lists, trees, and graphs each serve different purposes."
+            },
+            
+            // History
+            history: {
+                ancient: "Ancient civilizations like Egypt, Greece, and Rome laid foundations for modern society through innovations in government, philosophy, and technology.",
+                medieval: "The Medieval period (5th-15th centuries) saw the rise of feudalism, the spread of Christianity and Islam, and the Renaissance beginning.",
+                modern: "Modern history includes major revolutions, world wars, and technological advancement that shaped today's global society.",
+                worldwars: "The World Wars were global conflicts that reshaped international relations and led to significant social and technological changes."
+            },
+            
+            // Language and Literature
+            literature: {
+                poetry: "Poetry uses rhythm, rhyme, and figurative language to express emotions and ideas in concentrated, artistic form.",
+                novels: "Novels are extended fictional narratives that explore complex characters, themes, and social issues through storytelling.",
+                drama: "Drama presents stories through dialogue and action, meant for performance on stage or screen.",
+                criticism: "Literary criticism analyzes and interprets literature, examining themes, techniques, and cultural contexts."
+            },
+            
+            // Arts
+            arts: {
+                painting: "Painting uses pigments on surfaces to create visual art. Techniques include perspective, color theory, and composition.",
+                music: "Music combines rhythm, melody, and harmony to create emotional and aesthetic experiences across cultures.",
+                sculpture: "Sculpture creates three-dimensional art through carving, modeling, or assembling materials like stone, metal, or clay.",
+                architecture: "Architecture designs and constructs buildings, balancing functionality, aesthetics, and structural integrity."
+            }
+        };
+
+        // Enhanced response generation with educational focus
+        function generateEducationalResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            // Math problem solving
+            if (lowerMessage.includes('solve') && /\d+[x]\s*[\+\-]\s*\d+\s*=\s*\d+/.test(lowerMessage)) {
+                return solveMathProblem(message);
+            }
+            
+            // Subject-specific responses
+            const subjects = [
+                'math', 'algebra', 'calculus', 'geometry', 'statistics',
+                'physics', 'chemistry', 'biology', 'science',
+                'history', 'literature', 'programming', 'python', 'javascript',
+                'art', 'music', 'philosophy', 'economics'
+            ];
+            
+            for (let subject of subjects) {
+                if (lowerMessage.includes(subject)) {
+                    return getSubjectResponse(subject, lowerMessage);
+                }
+            }
+            
+            // Concept explanations
+            if (lowerMessage.includes('explain') || lowerMessage.includes('what is')) {
+                return explainConcept(lowerMessage);
+            }
+            
+            // Study help
+            if (lowerMessage.includes('how to study') || lowerMessage.includes('learning tips')) {
+                return getStudyTips();
+            }
+            
+            // Default educational response
+            return getDefaultEducationalResponse();
+        }
+
+        function solveMathProblem(problem) {
+            const match = problem.match(/(\d+)x\s*[\+\-]\s*(\d+)\s*=\s*(\d+)/);
+            if (match) {
+                const [, coeff, constant, result] = match;
+                const a = parseInt(coeff);
+                const b = parseInt(constant);
+                const c = parseInt(result);
+                const operator = problem.includes('+') ? '+' : '-';
+                
+                let x;
+                if (operator === '+') {
+                    x = (c - b) / a;
+                } else {
+                    x = (c + b) / a;
+                }
+                
+                return `<div class="math-formula"><strong>Step-by-step solution:</strong><br>
+                Given: ${a}x ${operator} ${b} = ${c}<br>
+                Subtract ${operator === '+' ? b : -b} from both sides: ${a}x = ${c - (operator === '+' ? b : -b)}<br>
+                Divide by ${a}: x = ${(c - (operator === '+' ? b : -b)) / a}<br>
+                <strong>Answer: x = ${x}</strong></div>
+                
+                <strong>Verification:</strong> ${a}(${x}) ${operator} ${b} = ${a * x + (operator === '+' ? b : -b)} ✓`;
+            }
+            return "I can help solve algebra problems! Please format them like '2x + 5 = 15' for best results.";
+        }
+
+        function getSubjectResponse(subject, message) {
+            const responses = {
+                math: "Mathematics is the study of numbers, structures, and patterns. What specific area would you like to explore? Algebra, geometry, calculus, or statistics?",
+                algebra: "Algebra uses variables to represent unknown quantities. We manipulate equations to solve for these unknowns using operations that maintain equality.",
+                physics: "Physics studies matter, energy, and their interactions. From quantum mechanics to relativity, it explains how our universe works. What physics topic interests you?",
+                chemistry: "Chemistry explores atoms, molecules, and chemical reactions. It bridges physics and biology, explaining matter at the molecular level.",
+                biology: "Biology is the study of living organisms. From cells to ecosystems, it covers life's complexity. Are you interested in a specific area like genetics or ecology?",
+                history: "History helps us understand the past to inform the present. Which period or civilization would you like to explore?",
+                programming: "Programming involves creating instructions for computers. What language or concept would you like to learn about?",
+                python: "Python is beginner-friendly with clear syntax. It's used for web development, data science, AI, and more. What would you like to know?",
+                literature: "Literature encompasses written works that express human experience through storytelling, poetry, and drama. What genre interests you?"
+            };
+            
+            return responses[subject] || `${subject.charAt(0).toUpperCase() + subject.slice(1)} is a fascinating subject! What specific aspect would you like to learn about?`;
+        }
+
+        function explainConcept(message) {
+            const concepts = {
+                'photosynthesis': "Photosynthesis is how plants make food using sunlight! 🌱<br><br><strong>Simple process:</strong><br>1. Plants absorb sunlight through leaves<br>2. They take in CO₂ from air and water from roots<br>3. Chlorophyll (green pigment) captures light energy<br>4. This energy converts CO₂ + H₂O into glucose (sugar) + oxygen<br><br><strong>Why it matters:</strong> Plants feed themselves AND produce the oxygen we breathe!",
+                
+                'gravity': "Gravity is the force that attracts objects toward each other! 🍎<br><br><strong>Key points:</strong><br>• Stronger with more massive objects<br>• Weaker with distance<br>• Keeps us on Earth and planets orbiting the sun<br>• Einstein showed it's actually curved spacetime!",
+                
+                'democracy': "Democracy means 'rule by the people'! 🗳️<br><br><strong>Core principles:</strong><br>• Citizens vote for leaders<br>• Individual rights protected<br>• Majority rule with minority rights<br>• Power divided among branches of government<br><br>Different types include direct democracy and representative democracy.",
+                
+                'dna': "DNA is like a instruction manual for life! 🧬<br><br><strong>Structure:</strong><br>• Double helix (twisted ladder)<br>• Made of 4 bases: A, T, G, C<br>• Genes are sections that code for traits<br>• Found in every cell nucleus<br><br><strong>Function:</strong> Stores genetic information passed from parents to children!"
+            };
+            
+            for (let concept in concepts) {
+                if (message.toLowerCase().includes(concept)) {
+                    return concepts[concept];
+                }
+            }
+            
+            return "I'd be happy to explain any concept! Please specify what you'd like me to explain, and I'll break it down in simple terms.";
+        }
+
+        function getStudyTips() {
+            return `<strong>🎯 Effective Study Strategies:</strong><br><br>
+            <strong>1. Active Learning:</strong><br>
+            • Summarize in your own words<br>
+            • Teach concepts to someone else<br>
+            • Create mind maps and diagrams<br><br>
+            
+            <strong>2. Spaced Repetition:</strong><br>
+            • Review material at increasing intervals<br>
+            • Use flashcards for key concepts<br>
+            • Practice problems regularly<br><br>
+            
+            <strong>3. Environment:</strong><br>
+            • Find a quiet, well-lit study space<br>
+            • Remove distractions<br>
+            • Take regular breaks (Pomodoro technique)<br><br>
+            
+            <strong>4. Understanding vs. Memorizing:</strong><br>
+            • Focus on 'why' not just 'what'<br>
+            • Connect new info to existing knowledge<br>
+            • Ask questions and seek deeper meaning`;
+        }
+
+        function getDefaultEducationalResponse() {
+            const responses = [
+                "I'm here to help you learn! What subject or topic would you like to explore today?",
+                "Great question! I can assist with any academic subject from basic concepts to advanced topics. What's on your mind?",
+                "I'm ready to be your learning companion! Whether it's homework help, concept explanation, or skill building, just ask!",
+                "Learning is an adventure! What would you like to discover or understand better today?",
+                "I can help explain complex topics in simple terms. What subject or question can I assist you with?"
+            ];
+            
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        function addMessage(content, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : ''}`;
+            
+            messageDiv.innerHTML = `
+                <div class="avatar ${isUser ? 'user-avatar' : 'bot-avatar'}">
+                    ${isUser ? '👤' : '🤖'}
+                </div>
+                <div class="message-content">
+                    ${content}
+                </div>
+            `;
+            
+            chatArea.appendChild(messageDiv);
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            typingIndicator.style.display = 'flex';
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            typingIndicator.style.display = 'none';
+        }
+
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+            
+            addMessage(message, true);
+            messageInput.value = '';
+            sendButton.disabled = true;
+            
+            showTypingIndicator();
+            
+            setTimeout(() => {
+                hideTypingIndicator();
+                const response = generateEducationalResponse(message);
+                addMessage(response);
+                sendButton.disabled = false;
+                messageInput.focus();
+            }, 1500 + Math.random() * 1000);
+        }
+
+        function askQuestion(question) {
+            messageInput.value = question;
+            sendMessage();
+        }
+
+        sendButton.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Auto-focus input on page load
+        messageInput.focus();
+    </script>
+</body>
+</html>

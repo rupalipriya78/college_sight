@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources Hub - CollegeSight</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(20px);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .logo i {
+            color: #6366f1;
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #6366f1;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Main Layout */
+        .main-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 120px 2rem 2rem;
+            display: grid;
+            grid-template-columns: 320px 1fr 350px;
+            gap: 2rem;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 140px;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            padding: 2rem 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+            text-align: center;
+        }
+
+        .sidebar-header h3 {
+            color: #ffffff;
+            margin-bottom: 0.75rem;
+            font-size: 1.2rem;
+        }
+
+        .college-badge {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .filters {
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        .filter-group {
+            margin-bottom: 2rem;
+        }
+
+        .filter-group h4 {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .filter-list {
+            list-style: none;
+        }
+
+        .filter-item {
+            padding: 0.875rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid transparent;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .filter-item:hover {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateX(5px);
+        }
+
+        .filter-item.active {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border-color: rgba(99, 102, 241, 0.5);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        .resource-count {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .filter-item.active .resource-count {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .content-header {
+            padding: 2rem;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-header::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .content-header h2 {
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-header p {
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .upload-section {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .upload-container {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .upload-btn {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 0.875rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .search-section {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 3rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 25px;
+            font-size: 1rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .resources-grid {
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            max-height: 700px;
+            overflow-y: auto;
+        }
+
+        /* Custom scrollbar */
+        .resources-grid::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .resources-grid::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .resources-grid::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 3px;
+        }
+
+        .resource-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resource-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .resource-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .resource-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .resource-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .pdf-icon { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .doc-icon { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .ppt-icon { background: linear-gradient(135deg, #f97316, #ea580c); }
+        .img-icon { background: linear-gradient(135deg, #10b981, #059669); }
+        .other-icon { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+
+        .resource-info {
+            flex: 1;
+        }
+
+        .resource-title {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+            font-size: 1.1rem;
+            line-height: 1.3;
+        }
+
+        .resource-subject {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .resource-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .meta-tag {
+            background: rgba(99, 102, 241, 0.2);
+            color: #a5b4fc;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .uploader-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .uploader-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .uploader-details {
+            flex: 1;
+        }
+
+        .uploader-name {
+            font-weight: 600;
+            color: #ffffff;
+            font-size: 0.9rem;
+        }
+
+        .uploader-year {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+        }
+
+        .resource-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .action-btn {
+            flex: 1;
+            background: rgba(99, 102, 241, 0.2);
+            color: #a5b4fc;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            padding: 0.625rem 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .action-btn:hover {
+            background: rgba(99, 102, 241, 0.3);
+            color: #ffffff;
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .download-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Chat Sidebar */
+        .chat-sidebar {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 140px;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            color: #ffffff;
+            font-size: 1.1rem;
+        }
+
+        .notification-badge {
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .chat-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .chat-item {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            position: relative;
+        }
+
+        .chat-item:hover {
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .chat-item.unread {
+            background: rgba(99, 102, 241, 0.1);
+            border-left: 3px solid #6366f1;
+        }
+
+        .chat-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .chat-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .chat-name {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .chat-preview {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-time {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        /* Study Groups Section */
+        .study-groups {
+            margin-top: 1rem;
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+            padding-top: 1rem;
+        }
+
+        .group-item {
+            padding: 0.875rem 1.5rem;
+            margin-bottom: 0.5rem;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .group-item:hover {
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        .group-name {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .group-members {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+        }
+
+        /* Upload Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: rgba(15, 22, 41, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 20px;
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            color: white;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .upload-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-input, .form-select, .form-textarea {
+            padding: 0.875rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 12px;
+            color: white;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .form-input::placeholder, .form-textarea::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .file-upload {
+            border: 2px dashed rgba(99, 102, 241, 0.5);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            background: rgba(99, 102, 241, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .file-upload:hover {
+            border-color: #6366f1;
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .file-upload.dragover {
+            border-color: #6366f1;
+            background: rgba(99, 102, 241, 0.15);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: #6366f1;
+            margin-bottom: 1rem;
+        }
+
+        .upload-text {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-hint {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            padding: 0.875rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1400px) {
+            .main-container {
+                grid-template-columns: 280px 1fr 300px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .sidebar,
+            .chat-sidebar {
+                position: static;
+                max-height: 400px;
+                overflow-y: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .main-container {
+                padding: 100px 1rem 2rem;
+                gap: 1rem;
+            }
+
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .resources-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+
+            .modal-content {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #6366f1;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Floating Animation */
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                CollegeSight
+            </div>
+            
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="login2.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="connectingeditting.html"><i class="fas fa-users"></i> Connect</a></li>
+                    <li><a href="resourcesfinal.html" class="active"><i class="fas fa-book"></i> Resources</a></li>
+                    <li><a href="360.html"><i class="fas fa-compass"></i> Explore</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-info">
+                <span>Riya Singh</span>
+                <div class="user-avatar">RS</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Left Sidebar - Filters -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>Resources Hub</h3>
+                <div class="college-badge">VIT BHOPAL</div>
+            </div>
+            
+            <div class="filters">
+                <div class="filter-group">
+                    <h4>Academic Year</h4>
+                    <ul class="filter-list">
+                        <li class="filter-item" data-year="2024">
+                            <span>BATCH 2022</span>
+                            <span class="resource-count">78</span>
+                        </li>
+                        <li class="filter-item" data-year="2025">
+                            <span>BATCH 2023</span>
+                            <span class="resource-count">69</span>
+                        </li>
+                        <li class="filter-item" data-year="2026">
+                            <span>BATCH 2024</span>
+                            <span class="resource-count">54</span>
+                        </li>
+                        <li class="filter-item" data-year="2027">
+                            <span>BATCH 2025</span>
+                            <span class="resource-count">46</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="filter-group">
+                    <h4>Resource Type</h4>
+                    <ul class="filter-list">
+                        <li class="filter-item" data-type="notes">
+                            <span><i class="fas fa-file-alt"></i> Notes</span>
+                            <span class="resource-count">156</span>
+                        </li>
+                        <li class="filter-item" data-type="assignments">
+                            <span><i class="fas fa-tasks"></i> Assignments</span>
+                            <span class="resource-count">43</span>
+                        </li>
+                        <li class="filter-item" data-type="papers">
+                            <span><i class="fas fa-file-pdf"></i> Previous Papers</span>
+                            <span class="resource-count">34</span>
+                        </li>
+                        <li class="filter-item" data-type="presentations">
+                            <span><i class="fas fa-presentation"></i> Presentations</span>
+                            <span class="resource-count">14</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content-header">
+                <h2>Study Resources Hub</h2>
+                <p>Access comprehensive study materials shared by seniors, alumni, and fellow students</p>
+            </div>
+
+            <div class="upload-section">
+                <div class="upload-container">
+                    <button class="upload-btn" onclick="openUploadModal()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        Share Resource
+                    </button>
+                    <span style="color: rgba(255,255,255,0.7);">Help your juniors by sharing your study materials</span>
+                </div>
+            </div>
+
+            <div class="search-section">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Search by subject, topic, or contributor name...">
+                </div>
+            </div>
+
+            <div class="resources-grid" id="resourcesGrid">
+                <!-- Resources will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Right Sidebar - Chat & Study Groups -->
+        <div class="chat-sidebar">
+            <div class="chat-header">
+                <h3>Study Discussions</h3>
+                <div class="notification-badge">6</div>
+            </div>
+            
+            <div class="chat-list">
+                <div class="chat-item unread">
+                    <div class="chat-avatar">DS</div>
+                    <div class="chat-info">
+                        <div class="chat-name">Data Structures Group</div>
+                        <div class="chat-preview">New practice problems uploaded by Priya...</div>
+                    </div>
+                    <div class="chat-time">3m</div>
+                </div>
+
+                <div class="chat-item unread">
+                    <div class="chat-avatar">SK</div>
+                    <div class="chat-info">
+                        <div class="chat-name">Sarah Kumar</div>
+                        <div class="chat-preview">Thanks for the ML notes! Really helpful for...</div>
+                    </div>
+                    <div class="chat-time">15m</div>
+                </div>
+
+                <div class="chat-item">
+                    <div class="chat-avatar">DB</div>
+                    <div class="chat-info">
+                        <div class="chat-name">Database Study Group</div>
+                        <div class="chat-preview">Meeting tomorrow at 3 PM to discuss SQL...</div>
+                    </div>
+                    <div class="chat-time">2h</div>
+                </div>
+
+                <div class="chat-item unread">
+                    <div class="chat-avatar">PM</div>
+                    <div class="chat-info">
+                        <div class="chat-name">Priya Mehta</div>
+                        <div class="chat-preview">Can you share the OS assignment solution?</div>
+                    </div>
+                    <div class="chat-time">3h</div>
+                </div>
+
+                <div class="chat-item">
+                    <div class="chat-avatar">AM</div>
+                    <div class="chat-info">
+                        <div class="chat-name">Algorithms Group</div>
+                        <div class="chat-preview">New sorting visualization notes added...</div>
+                    </div>
+                    <div class="chat-time">5h</div>
+                </div>
+            </div>
+
+            <div class="study-groups">
+                <div class="chat-header" style="padding: 1rem 1.5rem; border-bottom: none;">
+                    <h3 style="font-size: 1rem;">Study Groups</h3>
+                    <button style="background: none; border: none; color: #6366f1; cursor: pointer;">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                
+                <div style="padding: 0 1.5rem 1.5rem;">
+                    <div class="group-item">
+                        <div class="group-name">Machine Learning Club</div>
+                        <div class="group-members">34 members • Active now</div>
+                    </div>
+                    
+                    <div class="group-item">
+                        <div class="group-name">Web Dev Enthusiasts</div>
+                        <div class="group-members">28 members • 2 online</div>
+                    </div>
+                    
+                    <div class="group-item">
+                        <div class="group-name">Placement Prep 2024</div>
+                        <div class="group-members">156 members • 12 online</div>
+                    </div>
+                    
+                    <div class="group-item">
+                        <div class="group-name">Research Paper Discussion</div>
+                        <div class="group-members">19 members • 3 online</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Modal -->
+    <div class="modal" id="uploadModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeUploadModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <h2 style="margin-bottom: 1.5rem; text-align: center;">Share Study Resource</h2>
+
+            <form class="upload-form" id="uploadForm">
+                <div class="form-group">
+                    <label class="form-label">Resource Title *</label>
+                    <input type="text" class="form-input" placeholder="e.g., Data Structures Complete Notes - Chapter 1-5" required>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Subject *</label>
+                        <select class="form-select" required>
+                            <option value="">Select Subject</option>
+                            <option value="dsa">Data Structures & Algorithms</option>
+                            <option value="dbms">Database Management</option>
+                            <option value="os">Operating Systems</option>
+                            <option value="cn">Computer Networks</option>
+                            <option value="ml">Machine Learning</option>
+                            <option value="se">Software Engineering</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Branch *</label>
+                        <select class="form-select" required>
+                            <option value="">Select Branch</option>
+                            <option value="cse">Computer Science</option>
+                            <option value="ece">Electronics & Communication</option>
+                            <option value="mech">Mechanical</option>
+                            <option value="civil">Civil</option>
+                            <option value="eee">Electrical</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Academic Year</label>
+                        <select class="form-select">
+                            <option value="">Any Year</option>
+                            <option value="2027">First Year</option>
+                            <option value="2026">Second Year</option>
+                            <option value="2025">Third Year</option>
+                            <option value="2024">Final Year</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Resource Type</label>
+                        <select class="form-select">
+                            <option value="notes">Class Notes</option>
+                            <option value="assignments">Assignments</option>
+                            <option value="papers">Previous Papers</option>
+                            <option value="presentations">Presentations</option>
+                            <option value="projects">Project Files</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-textarea" rows="3" placeholder="Brief description of the content, what topics are covered, any special notes..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Upload File *</label>
+                    <div class="file-upload" id="fileUpload">
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                        <div class="upload-text">Drag and drop your file here</div>
+                        <div class="upload-hint">or click to browse (PDF, DOC, PPT, ZIP - Max 50MB)</div>
+                        <input type="file" style="display: none;" id="fileInput" accept=".pdf,.doc,.docx,.ppt,.pptx,.zip,.rar">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeUploadModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-upload"></i> Upload Resource
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Sample resource data
+        const resourcesData = [
+            {
+                id: 1,
+                title: "Data Structures Complete Notes - Trees & Graphs",
+                subject: "Data Structures & Algorithms",
+                branch: "cse",
+                year: 2024,
+                type: "notes",
+                fileType: "pdf",
+                uploader: {
+                    name: "Sarah Kumar",
+                    avatar: "SK",
+                    year: "Final Year"
+                },
+                uploadDate: "2024-01-15",
+                downloads: 234,
+                rating: 4.8,
+                tags: ["Trees", "Graphs", "Algorithms", "Interview Prep"]
+            },
+            {
+                id: 2,
+                title: "Machine Learning Mid-Term Question Paper 2023",
+                subject: "Machine Learning",
+                branch: "cse",
+                year: 2025,
+                type: "papers",
+                fileType: "pdf",
+                uploader: {
+                    name: "Priya Mehta",
+                    avatar: "PM",
+                    year: "Final Year"
+                },
+                uploadDate: "2024-01-10",
+                downloads: 189,
+                rating: 4.6,
+                tags: ["Previous Paper", "Mid-Term", "ML"]
+            },
+            {
+                id: 3,
+                title: "Database Design Project - E-Commerce System",
+                subject: "Database Management",
+                branch: "cse",
+                year: 2025,
+                type: "assignments",
+                fileType: "zip",
+                uploader: {
+                    name: "Rahul Gupta",
+                    avatar: "RG",
+                    year: "Alumni 2023"
+                },
+                uploadDate: "2024-01-08",
+                downloads: 145,
+                rating: 4.7,
+                tags: ["Project", "Database", "ER Diagram", "SQL"]
+            },
+            {
+                id: 4,
+                title: "Operating Systems Presentation - Process Scheduling",
+                subject: "Operating Systems",
+                branch: "cse",
+                year: 2026,
+                type: "presentations",
+                fileType: "ppt",
+                uploader: {
+                    name: "Amit Sharma",
+                    avatar: "AS",
+                    year: "Final Year"
+                },
+                uploadDate: "2024-01-05",
+                downloads: 167,
+                rating: 4.5,
+                tags: ["OS", "Scheduling", "CPU", "Algorithms"]
+            },
+            {
+                id: 5,
+                title: "Computer Networks Lab Manual - Complete Solutions",
+                subject: "Computer Networks",
+                branch: "cse",
+                year: 2025,
+                type: "notes",
+                fileType: "pdf",
+                uploader: {
+                    name: "Neha Krishnan",
+                    avatar: "NK",
+                    year: "Alumni 2023"
+                },
+                uploadDate: "2024-01-03",
+                downloads: 201,
+                rating: 4.9,
+                tags: ["Lab Manual", "Networking", "Practical", "Solutions"]
+            },
+            {
+                id: 6,
+                title: "Digital Signal Processing Notes - Fourier Transform",
+                subject: "Digital Signal Processing",
+                branch: "ece",
+                year: 2025,
+                type: "notes",
+                fileType: "pdf",
+                uploader: {
+                    name: "Deepak Verma",
+                    avatar: "DV",
+                    year: "Final Year"
+                },
+                uploadDate: "2024-01-02",
+                downloads: 98,
+                rating: 4.4,
+                tags: ["DSP", "Fourier", "Transform", "Signals"]
+            },
+            {
+                id: 7,
+                title: "Thermodynamics Assignment - Heat Transfer Problems",
+                subject: "Thermodynamics",
+                branch: "mech",
+                year: 2026,
+                type: "assignments",
+                fileType: "pdf",
+                uploader: {
+                    name: "Ananya Singh",
+                    avatar: "ANS",
+                    year: "Final Year"
+                },
+                uploadDate: "2023-12-28",
+                downloads: 76,
+                rating: 4.3,
+                tags: ["Thermodynamics", "Heat Transfer", "Problems"]
+            },
+            {
+                id: 8,
+                title: "Software Engineering Complete Study Guide",
+                subject: "Software Engineering",
+                branch: "cse",
+                year: 2024,
+                type: "notes",
+                fileType: "pdf",
+                uploader: {
+                    name: "Maya Singh",
+                    avatar: "MS",
+                    year: "Alumni 2023"
+                },
+                uploadDate: "2023-12-25",
+                downloads: 312,
+                rating: 4.8,
+                tags: ["Software Engineering", "SDLC", "Testing", "Design Patterns"]
+            }
+        ];
+
+        // Filter functionality
+        let currentFilters = {
+            branch: 'all',
+            year: 'all',
+            type: 'all'
+        };
+
+        // Handle filter clicks
+        document.querySelectorAll('.filter-item[data-filter]').forEach(item => {
+            item.addEventListener('click', function() {
+                const filterType = 'branch';
+                const filterValue = this.dataset.filter;
+                
+                // Remove active class from all branch filters
+                document.querySelectorAll('.filter-item[data-filter]').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+                
+                currentFilters.branch = filterValue;
+                filterResources();
+            });
+        });
+
+        document.querySelectorAll('.filter-item[data-year]').forEach(item => {
+            item.addEventListener('click', function() {
+                // Toggle active state for year filters
+                if (this.classList.contains('active')) {
+                    this.classList.remove('active');
+                    currentFilters.year = 'all';
+                } else {
+                    document.querySelectorAll('.filter-item[data-year]').forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilters.year = this.dataset.year;
+                }
+                filterResources();
+            });
+        });
+
+        document.querySelectorAll('.filter-item[data-type]').forEach(item => {
+            item.addEventListener('click', function() {
+                // Toggle active state for type filters
+                if (this.classList.contains('active')) {
+                    this.classList.remove('active');
+                    currentFilters.type = 'all';
+                } else {
+                    document.querySelectorAll('.filter-item[data-type]').forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilters.type = this.dataset.type;
+                }
+                filterResources();
+            });
+        });
+
+        function filterResources() {
+            let filteredData = resourcesData;
+
+            // Filter by branch
+            if (currentFilters.branch !== 'all') {
+                filteredData = filteredData.filter(resource => resource.branch === currentFilters.branch);
+            }
+
+            // Filter by year
+            if (currentFilters.year !== 'all') {
+                filteredData = filteredData.filter(resource => resource.year.toString() === currentFilters.year);
+            }
+
+            // Filter by type
+            if (currentFilters.type !== 'all') {
+                filteredData = filteredData.filter(resource => resource.type === currentFilters.type);
+            }
+
+            displayResources(filteredData);
+        }
+
+        function displayResources(resources) {
+            const grid = document.getElementById('resourcesGrid');
+            
+            if (resources.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: rgba(255,255,255,0.5);">
+                        <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <p>No resources found for the selected filters</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Try adjusting your filters or be the first to share resources for this category!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = resources.map(resource => createResourceCard(resource)).join('');
+        }
+
+        function createResourceCard(resource) {
+            const iconClass = getFileIconClass(resource.fileType);
+            const uploaderRole = resource.uploader.year.includes('Alumni') ? 'Alumni' : resource.uploader.year;
+            
+            return `
+                <div class="resource-card floating" data-id="${resource.id}">
+                    <div class="resource-header">
+                        <div class="resource-icon ${iconClass}">
+                            <i class="${getFileIcon(resource.fileType)}"></i>
+                        </div>
+                        <div class="resource-info">
+                            <div class="resource-title">${resource.title}</div>
+                            <div class="resource-subject">${resource.subject}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-meta">
+                        ${resource.tags.map(tag => `<span class="meta-tag">${tag}</span>`).join('')}
+                    </div>
+                    
+                    <div class="uploader-info">
+                        <div class="uploader-avatar">${resource.uploader.avatar}</div>
+                        <div class="uploader-details">
+                            <div class="uploader-name">${resource.uploader.name}</div>
+                            <div class="uploader-year">${uploaderRole}</div>
+                        </div>
+                        <div style="color: rgba(255,255,255,0.5); font-size: 0.8rem;">
+                            <i class="fas fa-download" style="margin-right: 0.25rem;"></i>${resource.downloads}
+                        </div>
+                    </div>
+                    
+                    <div class="resource-actions">
+                        <button class="action-btn" onclick="previewResource(${resource.id})">
+                            <i class="fas fa-eye"></i> Preview
+                        </button>
+                        <button class="action-btn download-btn" onclick="downloadResource(${resource.id})">
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getFileIcon(fileType) {
+            const icons = {
+                pdf: 'fas fa-file-pdf',
+                doc: 'fas fa-file-word',
+                docx: 'fas fa-file-word',
+                ppt: 'fas fa-file-powerpoint',
+                pptx: 'fas fa-file-powerpoint',
+                zip: 'fas fa-file-archive',
+                rar: 'fas fa-file-archive'
+            };
+            return icons[fileType] || 'fas fa-file';
+        }
+
+        function getFileIconClass(fileType) {
+            const classes = {
+                pdf: 'pdf-icon',
+                doc: 'doc-icon',
+                docx: 'doc-icon',
+                ppt: 'ppt-icon',
+                pptx: 'ppt-icon',
+                zip: 'other-icon',
+                rar: 'other-icon'
+            };
+            return classes[fileType] || 'other-icon';
+        }
+
+        // Modal functions
+        function openUploadModal() {
+            document.getElementById('uploadModal').classList.add('show');
+        }
+
+        function closeUploadModal() {
+            document.getElementById('uploadModal').classList.remove('show');
+        }
+
+        // File upload functionality
+        const fileUpload = document.getElementById('fileUpload');
+        const fileInput = document.getElementById('fileInput');
+
+        fileUpload.addEventListener('click', () => fileInput.click());
+
+        fileUpload.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUpload.classList.add('dragover');
+        });
+
+        fileUpload.addEventListener('dragleave', () => {
+            fileUpload.classList.remove('dragover');
+        });
+
+        fileUpload.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUpload.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileSelect(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileSelect(e.target.files[0]);
+            }
+        });
+
+        function handleFileSelect(file) {
+            const uploadText = fileUpload.querySelector('.upload-text');
+            const uploadHint = fileUpload.querySelector('.upload-hint');
+            
+            uploadText.textContent = `Selected: ${file.name}`;
+            uploadHint.textContent = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
+            
+            fileUpload.style.borderColor = '#10b981';
+            fileUpload.style.background = 'rgba(16, 185, 129, 0.1)';
+        }
+
+        // Form submission
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('.btn-primary');
+            const originalContent = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '<div class="loading"></div> Uploading...';
+            submitBtn.disabled = true;
+            
+            // Simulate upload
+            setTimeout(() => {
+                submitBtn.innerHTML = originalContent;
+                submitBtn.disabled = false;
+                closeUploadModal();
+                showNotification('Resource uploaded successfully! It will be available after review.', 'success');
+                
+                // Reset form
+                this.reset();
+                const uploadText = fileUpload.querySelector('.upload-text');
+                const uploadHint = fileUpload.querySelector('.upload-hint');
+                uploadText.textContent = 'Drag and drop your file here';
+                uploadHint.textContent = 'or click to browse (PDF, DOC, PPT, ZIP - Max 50MB)';
+                fileUpload.style.borderColor = 'rgba(99, 102, 241, 0.5)';
+                fileUpload.style.background = 'rgba(99, 102, 241, 0.05)';
+            }, 2000);
+        });
+
+        // Resource actions
+        function previewResource(id) {
+            const resource = resourcesData.find(r => r.id === id);
+            showNotification(`Opening preview for "${resource.title}"...`, 'info');
+        }
+
+        function downloadResource(id) {
+            const resource = resourcesData.find(r => r.id === id);
+            
+            // Update download count
+            resource.downloads++;
+            
+            // Update the displayed count
+            const card = document.querySelector(`[data-id="${id}"]`);
+            const downloadCountEl = card.querySelector('.fas.fa-download').parentElement;
+            downloadCountEl.innerHTML = `<i class="fas fa-download" style="margin-right: 0.25rem;"></i>${resource.downloads}`;
+            
+            showNotification(`Downloading "${resource.title}"...`, 'success');
+        }
+
+        // Search functionality
+        document.querySelector('.search-input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            
+            const filteredData = resourcesData.filter(resource => {
+                return resource.title.toLowerCase().includes(searchTerm) ||
+                       resource.subject.toLowerCase().includes(searchTerm) ||
+                       resource.uploader.name.toLowerCase().includes(searchTerm) ||
+                       resource.tags.some(tag => tag.toLowerCase().includes(searchTerm));
+            });
+            
+            displayResources(filteredData);
+        });
+
+        // Chat functionality
+        document.querySelectorAll('.chat-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.remove('unread');
+                
+                const badge = document.querySelector('.notification-badge');
+                let count = parseInt(badge.textContent);
+                if (count > 0 && this.classList.contains('unread')) {
+                    badge.textContent = count - 1;
+                }
+                
+                const chatName = this.querySelector('.chat-name').textContent;
+                showNotification(`Opening discussion with ${chatName}...`, 'info');
+            });
+        });
+
+        // Study group functionality
+        document.querySelectorAll('.group-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const groupName = this.querySelector('.group-name').textContent;
+                showNotification(`Joining ${groupName}...`, 'info');
+            });
+        });
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 2rem;
+                background: ${type === 'success' ? 'rgba(16, 185, 129, 0.9)' : 'rgba(99, 102, 241, 0.9)'};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 12px;
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                z-index: 3000;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                font-weight: 500;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 4000);
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('uploadModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeUploadModal();
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            displayResources(resourcesData);
+            
+            // Add floating animation with staggered delays
+            setTimeout(() => {
+                document.querySelectorAll('.floating').forEach((el, index) => {
+                    el.style.animationDelay = `${index * 0.2}s`;
+                });
+            }, 500);
+        });
+
+        // Responsive mobile menu
+        const mobileMenuBtn = document.createElement('div');
+        mobileMenuBtn.className = 'mobile-menu';
+        mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+        mobileMenuBtn.style.cssText = `
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: white;
+        `;
+
+        document.querySelector('.nav-container').appendChild(mobileMenuBtn);
+
+        mobileMenuBtn.addEventListener('click', function() {
+            const navLinks = document.querySelector('.nav-links');
+            if (navLinks.style.display === 'flex') {
+                navLinks.style.display = 'none';
+            } else {
+                navLinks.style.display = 'flex';
+                navLinks.style.flexDirection = 'column';
+                navLinks.style.position = 'absolute';
+                navLinks.style.top = '100%';
+                navLinks.style.left = '0';
+                navLinks.style.right = '0';
+                navLinks.style.background = 'rgba(10, 14, 39, 0.98)';
+                navLinks.style.padding = '1rem';
+                navLinks.style.borderTop = '1px solid rgba(99, 102, 241, 0.2)';
+            }
+        });
+
+        // Update mobile menu visibility
+        function updateMobileMenu() {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            if (window.innerWidth <= 768) {
+                mobileMenu.style.display = 'block';
+            } else {
+                mobileMenu.style.display = 'none';
+                document.querySelector('.nav-links').style.display = 'flex';
+            }
+        }
+
+        window.addEventListener('resize', updateMobileMenu);
+        updateMobileMenu();
+    </script>
+</body>
+</html>
+        group">
+                    <h4>Branches</h4>
+                    <ul class="filter-list">
+                        <li class="filter-item active" data-filter="all">
+                            <span>All Branches</span>
+                            <span class="resource-count">247</span>
+                        </li>
+                        <li class="filter-item" data-filter="cse">
+                            <span>Computer Science</span>
+                            <span class="resource-count">89</span>
+                        </li>
+                        <li class="filter-item" data-filter="ece">
+                            <span>Electronics & Comm.</span>
+                            <span class="resource-count">67</span>
+                        </li>
+                        <li class="filter-item" data-filter="mech">
+                            <span>Mechanical</span>
+                            <span class="resource-count">45</span>
+                        </li>
+                        <li class="filter-item" data-filter="civil">
+                            <span>Civil Engineering</span>
+                            <span class="resource-count">32</span>
+                        </li>
+                        <li class="filter-item" data-filter="eee">
+                            <span>Electrical</span>
+                            <span class="resource-count">14</span>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <div class="filter-

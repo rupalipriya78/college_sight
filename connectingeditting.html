@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Hub - CollegeSight</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #ffffff;
+            background: #0a0e27;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(20px);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .logo i {
+            color: #6366f1;
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #6366f1;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Main Layout */
+        .main-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 120px 2rem 2rem;
+            display: grid;
+            grid-template-columns: 320px 1fr 320px;
+            gap: 2rem;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 140px;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            padding: 2rem 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .sidebar-header h3 {
+            color: #ffffff;
+            margin-bottom: 0.75rem;
+            font-size: 1.2rem;
+        }
+
+        .college-badge {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .batch-filter {
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        .filter-group {
+            margin-bottom: 2rem;
+        }
+
+        .filter-group h4 {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .batch-list {
+            list-style: none;
+        }
+
+        .batch-item {
+            padding: 0.875rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid transparent;
+        }
+
+        .batch-item:hover {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .batch-item.active {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+
+        .member-count {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .batch-item.active .member-count {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .content-header {
+            padding: 2rem;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(30px, -30px);
+        }
+
+        .content-header h2 {
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-header p {
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .search-section {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 3rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            font-size: 1rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .members-grid {
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-height: 700px;
+            overflow-y: auto;
+        }
+
+        /* Custom scrollbar */
+        .members-grid::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .members-grid::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .members-grid::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.5);
+            border-radius: 3px;
+        }
+
+        .member-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .member-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .member-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .member-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .member-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .online-indicator {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 16px;
+            height: 16px;
+            background: #10b981;
+            border: 2px solid #0a0e27;
+            border-radius: 50%;
+        }
+
+        .member-name {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+            font-size: 1.1rem;
+        }
+
+        .member-branch {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .member-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .status-alumni {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .status-senior {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .status-batchmate {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .status-junior {
+            background: rgba(249, 115, 22, 0.2);
+            color: #f97316;
+            border: 1px solid rgba(249, 115, 22, 0.3);
+        }
+
+        .connect-btn {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 0.625rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .connect-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        .connect-btn:disabled {
+            background: rgba(107, 114, 128, 0.5);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .connected-btn {
+            background: rgba(16, 185, 129, 0.8) !important;
+        }
+
+        .pending-btn {
+            background: rgba(249, 115, 22, 0.8) !important;
+        }
+
+        /* Chat Sidebar */
+        .chat-sidebar {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 140px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 600px;
+        }
+
+        .chat-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            color: #ffffff;
+            font-size: 1.1rem;
+        }
+
+        .notification-badge {
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .chat-list {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .chat-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            position: relative;
+        }
+
+        .chat-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .chat-item.unread {
+            background: rgba(99, 102, 241, 0.1);
+            border-left: 3px solid #6366f1;
+            padding-left: 1.25rem;
+        }
+
+        .chat-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .chat-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .chat-name {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-preview {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-time {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .chat-input-container {
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Connection Request Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: rgba(15, 22, 41, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            color: white;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .modal-header h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-header p {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .message-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: white;
+            font-family: inherit;
+            resize: vertical;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .message-textarea:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .message-textarea::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1400px) {
+            .main-container {
+                grid-template-columns: 280px 1fr 280px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .sidebar,
+            .chat-sidebar {
+                position: static;
+                max-height: 400px;
+                overflow-y: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .main-container {
+                padding: 100px 1rem 2rem;
+                gap: 1rem;
+            }
+
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .members-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+
+            .modal-content {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #6366f1;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                College Sight
+            </div>
+            
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="login2.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="connectingeditting.html" class="active"><i class="fas fa-users"></i> Connect</a></li>
+                    <li><a href="resourcesfinal.html"><i class="fas fa-book"></i> Resources</a></li>
+                    <li><a href="360.html"><i class="fas fa-compass"></i> Explore</a></li>
+                    
+                </ul>
+            </nav>
+
+            <div class="user-info">
+                <span>Riya Singh</span>
+                <div class="user-avatar">Rs</div>
+            </div>
+
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>Your Community</h3>
+                <div class="college-badge">VIT BHOPAL</div>
+            </div>
+            
+            <div class="batch-filter">
+                <div class="filter-group">
+                    <h4>Alumni Network</h4>
+                    <ul class="batch-list">
+                        <li class="batch-item" data-batch="2022">
+                            <span>2023 Graduates</span>
+                            <span class="member-count">52</span>
+                        </li>
+                        <li class="batch-item" data-batch="2023">
+                            <span>2024 Graduates</span>
+                            <span class="member-count">41</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="filter-group">
+                    <h4>Current Students</h4>
+                    <ul class="batch-list">
+                        <li class="batch-item" data-batch="2024">
+                            <span>2025 Batch </span>
+                            <span class="member-count">73</span>
+                        </li>
+                        <li class="batch-item" data-batch="2025">
+                            <span>2024 Batch </span>
+                            <span class="member-count">69</span>
+                        </li>
+                        <li class="batch-item" data-batch="2026">
+                            <span>2023 Batch</span>
+                            <span class="member-count">81</span>
+                        </li>
+                        <li class="batch-item" data-batch="2027">
+                            <span>2022 Batch </span>
+                            <span class="member-count">95</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="filter-group">
+                    <h4>Branch Filter</h4>
+                    <ul class="batch-list">
+                        <li class="batch-item" data-branch="cse">
+                            <span>Computer Science</span>
+                            <span class="member-count">156</span>
+                        </li>
+                        <li class="batch-item" data-branch="ece">
+                            <span>Electronics & Comm.</span>
+                            <span class="member-count">134</span>
+                        </li>
+                        <li class="batch-item" data-branch="mech">
+                            <span>Mechanical</span>
+                            <span class="member-count">98</span>
+                        </li>
+                        <li class="batch-item" data-branch="civil">
+                            <span>Civil Engineering</span>
+                            <span class="member-count">87</span>
+                        </li>
+                        <li class="batch-item" data-branch="eee">
+                            <span>Electrical</span>
+                            <span class="member-count">76</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="content-header">
+                <h2>Connect with your Community</h2>
+                <p>Build meaningful connections and expand your network</p>
+            </div>
+
+            <div class="search-section">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Search by name, branch, skills, or interests...">
+                </div>
+            </div>
+
+            <div class="members-grid">
+                </div>
+        </div>
+
+        <div class="chat-sidebar">
+            <div class="chat-header">
+                <h3>Public Chat</h3>
+            </div>
+            
+            <div class="chat-list">
+                </div>
+
+            <div class="chat-input-container">
+                <form id="chatForm" style="display:flex; gap:0.5rem;">
+                    <input type="text" id="chatMessage" placeholder="Type a message..." style="flex:1; padding:0.5rem; border-radius:20px; border:none; outline:none;" />
+                    <button type="submit" class="connect-btn" style="padding:0.5rem 1rem;">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="connectionModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeConnectionModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="modal-header">
+                <div class="modal-avatar" id="modalAvatar">SK</div>
+                <h3 id="modalName">Sarah Kumar</h3>
+                <p>Send a personalized connection request</p>
+            </div>
+
+            <textarea 
+                class="message-textarea" 
+                placeholder="Hi! I'd like to connect with you to learn more about your experience and seek guidance. Looking forward to connecting!"
+                id="connectionMessage"
+            ></textarea>
+
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeConnectionModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="sendConnectionRequest()">
+                    <i class="fas fa-paper-plane"></i> Send Request
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <script>
+        // REPLACE WITH YOUR FIREBASE CONFIG
+        const firebaseConfig = {
+            apiKey: "AIzaSyBaMP2ge_YusX9ulnKw44_t9MBrjKvSGyM",
+            authDomain: "college-sight-b61b8.firebaseapp.com",
+            projectId: "college-sight-b61b8",
+            storageBucket: "college-sight-b61b8.appspot.com",
+            messagingSenderId: "344406500012",
+            appId: "1:344406500012:web:5c144c425dcf43b6333509"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Get the current user's name from the header
+        const userName = document.querySelector('.user-info span').textContent;
+        
+        // Sign in anonymously to enable chat functionality for all users
+        auth.signInAnonymously().catch((error) => {
+            console.error("Anonymous sign-in failed", error);
+        });
+
+        // Global variable to hold all members data
+        let allMembers = [];
+        let allMemberDocs = {}; // Store member documents by name for easy lookup
+
+        // Get DOM elements
+        const membersGrid = document.querySelector('.members-grid');
+        const chatList = document.querySelector('.chat-list');
+        const chatForm = document.getElementById("chatForm");
+        const chatMessageInput = document.getElementById("chatMessage");
+
+        // Realtime listener for the public chat
+        db.collection("messages")
+            .orderBy("timestamp", "desc")
+            .limit(20) // Show last 20 messages
+            .onSnapshot(snapshot => {
+                chatList.innerHTML = ""; // Clear old messages
+                const messagesFragment = document.createDocumentFragment();
+                snapshot.forEach(doc => {
+                    const msg = doc.data();
+                    const initials = msg.sender ? msg.sender.split(' ').map(n => n[0]).join('').toUpperCase() : "?";
+                    const formattedTime = msg.timestamp?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) || "";
+                    
+                    const chatItem = document.createElement('div');
+                    chatItem.className = 'chat-item';
+                    
+                    const chatHTML = `
+                        <div class="chat-avatar">${initials}</div>
+                        <div class="chat-info">
+                            <div class="chat-name">${msg.sender}</div>
+                            <div class="chat-preview">${msg.text}</div>
+                        </div>
+                        <div class="chat-time">${formattedTime}</div>
+                    `;
+                    chatItem.innerHTML = chatHTML;
+                    messagesFragment.prepend(chatItem); // Add new messages to the top
+                });
+                chatList.appendChild(messagesFragment);
+            });
+        
+        // Handle message submission
+        chatForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const user = auth.currentUser;
+            const text = chatMessageInput.value.trim();
+            
+            if (!user) {
+                alert("Please login first!");
+                return;
+            }
+            if (!text) {
+                return;
+            }
+            
+            // Add message to Firestore
+            db.collection("messages").add({
+                sender: userName, // Use the user's name
+                text: text,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                chatMessageInput.value = ""; // Clear the input
+            }).catch(error => {
+                console.error("Error adding message:", error);
+            });
+        });
+
+        // Function to fetch members from Firestore
+        function fetchMembers() {
+            membersGrid.innerHTML = '<div style="text-align: center; padding: 2rem; color: rgba(255,255,255,0.5);"><div class="loading"></div><p style="margin-top: 1rem;">Loading members...</p></div>';
+            
+            db.collection("members")
+                .get()
+                .then((querySnapshot) => {
+                    allMembers = [];
+                    allMemberDocs = {};
+                    querySnapshot.forEach((doc) => {
+                        const memberData = doc.data();
+                        allMembers.push(memberData);
+                        allMemberDocs[memberData.name] = doc;
+                    });
+                    
+                    // Display all members by default
+                    renderMembers(allMembers);
+
+                    // Re-calculate and update member counts for batches
+                    updateBatchCounts();
+                })
+                .catch((error) => {
+                    console.error("Error getting members: ", error);
+                    membersGrid.innerHTML = '<div style="text-align: center; padding: 3rem; color: rgba(255,255,255,0.5);"><p>Error loading members. Please check your Firebase connection and permissions.</p></div>';
+                });
+        }
+
+        function renderMembers(members) {
+            membersGrid.innerHTML = '';
+            const fragment = document.createDocumentFragment();
+            members.forEach(member => {
+                const memberCard = createMemberCard(member);
+                const div = document.createElement('div');
+                div.innerHTML = memberCard.trim();
+                fragment.appendChild(div.firstChild);
+            });
+            membersGrid.appendChild(fragment);
+            if (members.length === 0) {
+                membersGrid.innerHTML = '<div style="text-align: center; padding: 3rem; color: rgba(255,255,255,0.5);"><i class="fas fa-search" style="font-size: 3rem; margin-bottom: 1rem;"></i><p>No members found matching the criteria.</p></div>';
+            }
+        }
+        
+        function updateBatchCounts() {
+            const batchCounts = {};
+            allMembers.forEach(member => {
+                if (batchCounts[member.batch]) {
+                    batchCounts[member.batch]++;
+                } else {
+                    batchCounts[member.batch] = 1;
+                }
+            });
+            document.querySelectorAll('.batch-item[data-batch]').forEach(item => {
+                const batch = item.dataset.batch;
+                const count = batchCounts[batch] || 0;
+                item.querySelector('.member-count').textContent = count;
+            });
+        }
+        
+        // Handle batch selection
+        document.querySelectorAll('.batch-item[data-batch]').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.batch-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+                
+                const batch = this.dataset.batch;
+                const batchText = this.querySelector('span').textContent;
+                
+                document.querySelector('.content-header h2').textContent = `Connect with ${batchText}`;
+                
+                const filteredMembers = allMembers.filter(member => member.batch == batch);
+                renderMembers(filteredMembers);
+            });
+        });
+
+        // Handle branch filter
+        document.querySelectorAll('.batch-item[data-branch]').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.batch-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+                
+                const branch = this.dataset.branch;
+                const branchText = this.querySelector('span').textContent;
+                
+                document.querySelector('.content-header h2').textContent = `Connect with ${branchText} Students`;
+                
+                const filteredMembers = allMembers.filter(member => member.branch.toLowerCase() === branch);
+                renderMembers(filteredMembers);
+            });
+        });
+
+        function createMemberCard(member) {
+            const statusClass = `status-${member.status}`;
+            const statusText = {
+                'alumni': 'Alumni',
+                'senior': 'Senior Student',
+                'batchmate': 'Batchmate',
+                'junior': 'Junior Student'
+            }[member.status];
+            
+            // To be implemented: Fetch real connection status from Firebase
+            const currentStatus = 'none';
+            let buttonContent = '<i class="fas fa-user-plus"></i> Connect';
+            let buttonClass = 'connect-btn';
+            let buttonDisabled = '';
+            
+            // Replace with your real connection status logic
+            // if (currentStatus === 'connected') { ... }
+            
+            const onlineIndicator = member.online ? '<div class="online-indicator"></div>' : '';
+            
+            return `
+                <div class="member-card" data-member="${member.name}">
+                    <div class="member-avatar">
+                        ${member.avatar}
+                        ${onlineIndicator}
+                    </div>
+                    <div class="member-name">${member.name}</div>
+                    <div class="member-branch">${member.branch} Engineering</div>
+                    <div class="member-status ${statusClass}">${statusText}</div>
+                    ${member.company ? `<div style="font-size: 0.8rem; color: rgba(255,255,255,0.6); margin-bottom: 0.5rem;"><i class="fas fa-building"></i> ${member.company}</div>` : ''}
+                    <div style="font-size: 0.75rem; color: rgba(255,255,255,0.5); margin-bottom: 1rem; line-height: 1.3;">${member.skills}</div>
+                    <button class="${buttonClass}" onclick="openConnectionModal('${member.name}', '${member.avatar}')" ${buttonDisabled}>
+                        ${buttonContent}
+                    </button>
+                </div>
+            `;
+        }
+        
+        // Rest of the functions (openConnectionModal, closeConnectionModal, sendConnectionRequest, etc.) remain the same.
+        // You can remove the 'updateMemberCardStatus', 'simulateConnectionResponse', and 'addToChatList' functions, as they are no longer needed
+        // with the new Firebase-based logic.
+        
+        // Search functionality
+        document.querySelector('.search-input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const memberCards = document.querySelectorAll('.member-card');
+            
+            memberCards.forEach(card => {
+                const name = card.querySelector('.member-name').textContent.toLowerCase();
+                const branch = card.querySelector('.member-branch').textContent.toLowerCase();
+                const skills = card.querySelector('div:nth-last-child(2)').textContent.toLowerCase();
+                
+                const matches = name.includes(searchTerm) || 
+                               branch.includes(searchTerm) || 
+                               skills.includes(searchTerm);
+                
+                card.style.display = matches ? 'block' : 'none';
+            });
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('connectionModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeConnectionModal();
+            }
+        });
+
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu').addEventListener('click', function() {
+            const navLinks = document.querySelector('.nav-links');
+            if (navLinks.style.display === 'flex') {
+                navLinks.style.display = 'none';
+            } else {
+                navLinks.style.display = 'flex';
+                navLinks.style.flexDirection = 'column';
+                navLinks.style.position = 'absolute';
+                navLinks.style.top = '100%';
+                navLinks.style.left = '0';
+                navLinks.style.right = '0';
+                navLinks.style.background = 'rgba(10, 14, 39, 0.98)';
+                navLinks.style.padding = '1rem';
+                navLinks.style.borderTop = '1px solid rgba(255, 255, 255, 0.1)';
+            }
+        });
+
+        // Initialize with default members on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchMembers();
+        });
+    </script>
+</body>
+
+</html>
